@@ -3,45 +3,36 @@
 import sys
 import os
 
-# ✅ Přidáme backend do cesty, aby fungovaly importy i při přímém spuštění
+# ✅ Přidáme backend do cesty pro správné importy
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
-from flask import Flask, render_template         # 🟢 Flask a HTML šablony
-from flask_cors import CORS                      # 🟢 CORS pro povolení přístupů z různých domén
-from routes.chat import chat_bp                  # 🟢 Importujeme náš Blueprint pro /api/chat
-from dotenv import load_dotenv                   # 🟢 Načtení proměnných z .env
+from flask import Flask, render_template
+from flask_cors import CORS
+from dotenv import load_dotenv
+from routes.chat import chat_bp
 
-# ✅ Načteme .env soubor s API klíčem (např. DEEPSEEK_API_KEY)
+# ✅ Načtení proměnných z .env
 load_dotenv()
 
 def create_app():
-    # ✅ Vytvoření instance Flasku
     app = Flask(__name__)
-
-    # ✅ Povolení CORS pro všechny zdroje (např. React frontend nebo jiné weby)
     CORS(app, resources={r"/*": {"origins": "*"}})
 
-    # ✅ Registrace chatu na prefixu /api
+    # ✅ Registrace API routy
     app.register_blueprint(chat_bp, url_prefix="/api")
 
-    # ✅ Hlavní root endpoint – kontrola, že server běží
     @app.route("/")
     def index():
         return "✅ AI Chatbot backend běží."
 
-    # ✅ Endpoint pro demo stránku – HTML šablona v templates/demo.html
     @app.route("/demo")
     def demo():
         return render_template("demo.html")
 
     return app
 
-# ✅ Spuštění serveru (funguje i na Railway – PORT z env proměnné)
+# ✅ Spuštění aplikace – důležité pro Railway!
 if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))  # Railway ti přidělí port
     app = create_app()
-
-    # ✅ Railway nastaví PORT jako env proměnnou, jinak použijeme výchozí 8080
-    port = int(os.environ.get("PORT", 8080))
-
-    # ✅ Posloucháme na všech rozhraních (potřebné pro Railway)
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port)
