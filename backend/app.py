@@ -30,9 +30,3 @@ def create_app():
         return render_template("demo.html")
 
     return app
-
-# ✅ Spuštění aplikace – důležité pro Railway!
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8080))  # Railway ti přidělí port
-    app = create_app()
-    app.run(host="0.0.0.0", port=port)
