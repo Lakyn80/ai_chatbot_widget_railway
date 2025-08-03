@@ -7,9 +7,9 @@ import os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from flask import Flask, render_template         # 🟢 Flask a HTML šablony
-from flask_cors import CORS                     # 🟢 CORS pro povolení přístupů z různých domén
-from routes.chat import chat_bp                 # 🟢 Importujeme náš Blueprint pro /api/chat
-from dotenv import load_dotenv                  # 🟢 Načtení proměnných z .env
+from flask_cors import CORS                      # 🟢 CORS pro povolení přístupů z různých domén
+from routes.chat import chat_bp                  # 🟢 Importujeme náš Blueprint pro /api/chat
+from dotenv import load_dotenv                   # 🟢 Načtení proměnných z .env
 
 # ✅ Načteme .env soubor s API klíčem (např. DEEPSEEK_API_KEY)
 load_dotenv()
@@ -36,7 +36,12 @@ def create_app():
 
     return app
 
-# ✅ Spuštění vývojového serveru na portu 8080
+# ✅ Spuštění serveru (funguje i na Railway – PORT z env proměnné)
 if __name__ == "__main__":
     app = create_app()
-    app.run(host="0.0.0.0", port=8080, debug=True)
+
+    # ✅ Railway nastaví PORT jako env proměnnou, jinak použijeme výchozí 8080
+    port = int(os.environ.get("PORT", 8080))
+
+    # ✅ Posloucháme na všech rozhraních (potřebné pro Railway)
+    app.run(host="0.0.0.0", port=port, debug=True)
