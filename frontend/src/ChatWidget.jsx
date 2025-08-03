@@ -1,7 +1,8 @@
+// 📁 frontend/src/widget/ChatWidget.jsx
 import React, { useState } from "react";
 import ChatWindow from "./ChatWindow";
 
-// 🟣 Stylizace ve stylu "Náramková Móda"
+// 🟣 Stylizace widgetu ve stylu „Náramková Móda“
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -10,7 +11,9 @@ export default function ChatWidget() {
       {/* 🔘 Bublina pro otevření/zavření chatu */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-lg bg-pink-500 hover:bg-pink-600 transition-all"
+        className={`fixed bottom-6 right-6 z-50 p-4 rounded-full shadow-lg bg-pink-500 hover:bg-pink-600 transition-all duration-300 transform ${
+          isOpen ? "rotate-45 scale-90" : "scale-100"
+        }`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -19,11 +22,8 @@ export default function ChatWidget() {
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          {isOpen ? (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h6m-6 4h10" />
-          )}
+          {/* Tři čárky jako bublina */}
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h10M7 16h10" />
         </svg>
       </button>
 
